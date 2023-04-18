@@ -3,8 +3,10 @@ package apis
 import (
 	"encoding/json"
 	"fmt"
+
 	"github.com/gin-gonic/gin"
 	"github.com/go-admin-team/go-admin-core/sdk/api"
+	"github.com/go-admin-team/go-admin-core/sdk/pkg/jwtauth/user"
 	"go-admin/app/admin/service"
 )
 
@@ -20,7 +22,8 @@ func (d Dashboard) All(c *gin.Context) {
 		d.Error(500, err, err.Error())
 		return
 	}
-	rsp, err := svc.All(c)
+	name := user.GetUserName(c)
+	rsp, err := svc.All(c, name)
 	if err != nil {
 		d.Error(500, err, err.Error())
 		fmt.Printf("err:%s\n", err.Error())
